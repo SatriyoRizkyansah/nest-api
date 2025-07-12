@@ -17,20 +17,48 @@ datasource db {
   // directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
-model Employee {
-  id        Int      @id @default(autoincrement())
-  name      String   
-  email     String   @unique
-  // password  String
-  role      Role
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Product {
+  id        Int     @id @default(autoincrement())
+  kode      String  @unique
+  name      String
+  price     Int
+  its_ready Boolean
+  img       String
 
-  @@map("users")
+  // Relasi
+  bestProduct BestProduct?
+  cartItems   Cart[]
+  orderItems  OrderItem[]
 }
 
-enum Role {
-  ADMIN
-  USER
-  INTERN
+model BestProduct {
+  id         Int     @id @default(autoincrement())
+  productId  Int     @unique
+  product    Product @relation(fields: [productId], references: [id])
+}
+
+model Cart {
+  id          Int     @id @default(autoincrement())
+  productId   Int
+  product     Product @relation(fields: [productId], references: [id])
+  quantity    Int
+  description String
+}
+
+model Order {
+  id           String      @id @default(uuid())
+  name         String
+  table_number String
+  orderItems   OrderItem[]
+}
+
+model OrderItem {
+  id          Int     @id @default(autoincrement())
+  orderId     String
+  productId   Int
+  product     Product @relation(fields: [productId], references: [id])
+  quantity    Int
+  description String
+
+  order       Order   @relation(fields: [orderId], references: [id])
 }
