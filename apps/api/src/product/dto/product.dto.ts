@@ -8,4 +8,5 @@ export class ProductDto {
   price: number;
   its_ready: boolean;
   img: string;
+  best_seller: boolean;
 }

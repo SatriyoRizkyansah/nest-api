@@ -23,26 +23,11 @@ model Product {
   name      String
   price     Int
   its_ready Boolean
+  best_seller Boolean
   img       String
 
   // Relasi
-  bestProduct BestProduct?
-  cartItems   Cart[]
   orderItems  OrderItem[]
-}
-
-model BestProduct {
-  id         Int     @id @default(autoincrement())
-  productId  Int     @unique
-  product    Product @relation(fields: [productId], references: [id])
-}
-
-model Cart {
-  id          Int     @id @default(autoincrement())
-  productId   Int
-  product     Product @relation(fields: [productId], references: [id])
-  quantity    Int
-  description String
 }
 
 model Order {
